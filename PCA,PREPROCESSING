@@ -1,0 +1,29 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+
+# Read the dataset
+df = pd.read_csv("/content/penguins1.csv")
+df=df.drop(columns=["species","island"])
+# Separate features and target
+X = df.drop('sex', axis=1)
+y = df['sex']
+# Label encode the 'sex' column
+label_encoder = LabelEncoder()
+y_encoded = label_encoder.fit_transform(y)
+
+# Standardize the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply PCA
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+# Plot the data points with color-coded labels
+plt.scatter(X_pca[:, 0], X_pca[:, 1])
+plt.xlabel('First Principal Component')
+plt.ylabel('Second Principal Component')
+plt.title('PCA of Penguin Dataset')
+plt.show()
